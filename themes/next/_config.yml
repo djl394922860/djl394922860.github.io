@@ -49,7 +49,7 @@ rss:
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  #since: 2015
+  since: 2019
 
   # Icon between year and copyright info.
   icon:
@@ -200,6 +200,7 @@ site_state: true
 social:
   GitHub: https://github.com/djl394922860 || github
   E-Mail: mailto:djlnet@outlook.com || envelope
+  知乎: https://www.zhihu.com/people/djlnetcore
   #Weibo: https://weibo.com/yourname || weibo
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
@@ -221,7 +222,10 @@ links_title: 推荐阅读
 # links_layout: block
 links_layout: inline
 links:
-  Djlnet博客园: http://cnblogs.com/djlnet
+  Djlnet博客园: https://cnblogs.com/djlnet
+  Google: https://www.google.com
+  Bing: https://www.bing.com
+  Cnblogs: https://cnblogs.com
 
 # Sidebar Avatar
 avatar:
@@ -416,7 +420,7 @@ custom_logo:
 # Code Highlight theme
 # Available values: normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night
 
 # Enable "cheers" for archive page.
 cheers: true
