@@ -6,6 +6,7 @@ categories:
 - 分布式消息队列
 tags:
 - RabbitMQ
+comments: true
 ---
 
 > just test new post
