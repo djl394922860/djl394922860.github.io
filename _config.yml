@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 阿杜的个人博客
+title: Djlnet's blog
 subtitle: 分享让人更加懂得知识的意义
 description: .Net 后端开发爱好者
 keywords:
 author: 阿杜 Djlnet
-language: zh-CN
-timezone:
+language: zh-CN # 主题语言
+timezone: Asia/Shanghai #中国的时区，不要乱改城市
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
