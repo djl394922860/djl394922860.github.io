@@ -99,8 +99,8 @@ creative_commons:
 
 # `Follow me on GitHub` banner in the top-right corner.
 github_banner:
-  enable: false
-  permalink: https://github.com/yourname
+  enable: true
+  permalink: https://github.com/djl394922860
   title: Follow me on GitHub
 
 
@@ -158,13 +158,13 @@ baidu_push: false
 # External url should start with http:// or https://
 menu:
   home: / || home
-  #about: /about/ || user
-  #tags: /tags/ || tags
-  #categories: /categories/ || th
+  about: /about/ || user
+  tags: /tags/ || tags
+  categories: /categories/ || th
   archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat
+  schedule: /schedule/ || calendar
+  sitemap: /sitemap.xml || sitemap
+  commonweal: /404/ || heartbeat
 
 
 # Enable / Disable menu icons / item badges.
@@ -198,8 +198,8 @@ site_state: true
 # Value before `||` delimiter is the target permalink.
 # Value after `||` delimiter is the name of FontAwesome icon. If icon (with or without delimiter) is not specified, globe icon will be loaded.
 social:
-  #GitHub: https://github.com/yourname || github
-  #E-Mail: mailto:yourname@gmail.com || envelope
+  GitHub: https://github.com/djl394922860 || github
+  E-Mail: mailto:djlnet@outlook.com || envelope
   #Weibo: https://weibo.com/yourname || weibo
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
@@ -213,15 +213,15 @@ social:
 social_icons:
   enable: true
   icons_only: false
-  transition: false
+  transition: true
 
 # Blog rolls
 links_icon: link
-links_title: Links
-links_layout: block
-#links_layout: inline
+links_title: 推荐阅读
+# links_layout: block
+links_layout: inline
 links:
-  #Title: http://example.com
+  Djlnet博客园: http://cnblogs.com/djlnet
 
 # Sidebar Avatar
 avatar:
@@ -1220,3 +1220,16 @@ live2d:
     height: 300
   mobile:
     show: true
+
+# 文章末尾添加“本文结束”标记
+passage_end_tag:
+  enabled: true
+
+# Post wordcount display settings
+# Dependencies: https://github.com/willin/hexo-wordcount
+post_wordcount:
+  item_text: true
+  wordcount: true         # 单篇 字数统计
+  min2read: true          # 单篇 阅读时长
+  totalcount: false       # 网站 字数统计
+  separated_meta: true

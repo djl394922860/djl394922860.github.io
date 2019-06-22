@@ -138,6 +138,17 @@
             </span>
           {% endif %}
 
+          
+          <span class="post-meta-divider">|</span>
+          <span title="{{ __('post.wordcount') }}">
+             字数统计: {{ wordcount(post.content) }} 字
+          </span>
+
+          <span class="post-meta-divider">|</span>
+          <span title="{{ __('post.min2read') }}">
+             阅读时间: {{ min2read(post.content) }} 分钟
+          </span>
+
           {% if post.comments %}
             {% macro comments() %}
               <span class="post-comments-count">
@@ -337,6 +348,20 @@
     {#####################}
     {### END POST BODY ###}
     {#####################}
+
+    {# 添加文章增加版权信息 #}
+    <div>
+      {% if not is_index %}
+        {% include 'my-copyright.swig' %}
+      {% endif %}
+    </div>
+
+    {# 添加文章阅读结尾 #}
+    <div>
+      {% if not is_index %}
+        {% include 'passage-end-tag.swig' %}
+      {% endif %}
+    </div>
 
     {% if theme.wechat_subscriber.enable and not is_index %}
       {% include '../_partials/post/wechat-subscriber.swig' %}

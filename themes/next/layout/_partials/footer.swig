@@ -6,7 +6,7 @@
 #}&copy; {% if theme.footer.since and theme.footer.since != current %}{{ theme.footer.since }} – {% endif %}{#
 #}<span itemprop="copyrightYear">{{ current }}</span>
   <span class="with-love" id="animate">
-    <i class="fa fa-{{ theme.footer.icon.name }}"></i>
+    <i class="fa fa-heart" aria-hidden="true"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">{{ theme.footer.copyright || author }}</span>
 
@@ -60,3 +60,8 @@
   #}{{ theme.footer.custom_text }}{#
 #}</div>
 {% endif %}
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共{{ totalcount(site) }}字</span>
+</div>
