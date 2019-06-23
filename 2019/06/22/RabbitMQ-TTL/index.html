@@ -105,18 +105,23 @@
 
 
 
-  <meta name="description" content="just test new post">
+  <meta name="description" content="前言关于RabbitMQ的延时队列 , 官方文档已经给了较为详细的说明文档 , 详情参考链接: https://www.rabbitmq.com/ttl.html , 此文主要记录在某些场景下面的RabbitMQ是否表现与我们预期的结果保持一致… 摘要             测试环境: RabbitMQ 3.7.15 Erlang 22.0.3 ( centos 7 + docker )">
 <meta name="keywords" content="RabbitMQ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RabbitMQ TTL">
-<meta property="og:url" content="http://yoursite.com/2019/06/22/RabbitMQ-TTL/index.html">
+<meta property="og:title" content="RabbitMQ Queue 过期机制测试探索">
+<meta property="og:url" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/index.html">
 <meta property="og:site_name" content="Djlnet&#39;s blog">
-<meta property="og:description" content="just test new post">
+<meta property="og:description" content="前言关于RabbitMQ的延时队列 , 官方文档已经给了较为详细的说明文档 , 详情参考链接: https://www.rabbitmq.com/ttl.html , 此文主要记录在某些场景下面的RabbitMQ是否表现与我们预期的结果保持一致… 摘要             测试环境: RabbitMQ 3.7.15 Erlang 22.0.3 ( centos 7 + docker )">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-22T08:58:41.754Z">
+<meta property="og:image" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/deal-exchange.png">
+<meta property="og:image" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/queue-to-deal-exchange.png">
+<meta property="og:image" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/1.png">
+<meta property="og:image" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/2.png">
+<meta property="og:updated_time" content="2019-06-23T08:29:30.144Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RabbitMQ TTL">
-<meta name="twitter:description" content="just test new post">
+<meta name="twitter:title" content="RabbitMQ Queue 过期机制测试探索">
+<meta name="twitter:description" content="前言关于RabbitMQ的延时队列 , 官方文档已经给了较为详细的说明文档 , 详情参考链接: https://www.rabbitmq.com/ttl.html , 此文主要记录在某些场景下面的RabbitMQ是否表现与我们预期的结果保持一致… 摘要             测试环境: RabbitMQ 3.7.15 Erlang 22.0.3 ( centos 7 + docker )">
+<meta name="twitter:image" content="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/deal-exchange.png">
 
 
 
@@ -124,7 +129,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/06/22/RabbitMQ-TTL/">
+  <link rel="canonical" href="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/">
 
 
 
@@ -134,7 +139,7 @@
   };
 </script>
 
-  <title>RabbitMQ TTL | Djlnet's blog</title>
+  <title>RabbitMQ Queue 过期机制测试探索 | Djlnet's blog</title>
   
 
 
@@ -319,40 +324,6 @@
         
         
           
-          <li class="menu-item menu-item-schedule">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-sitemap">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>站点地图</a>
-
-  </li>
-        
-        
-        
-          
           <li class="menu-item menu-item-commonweal">
 
     
@@ -422,7 +393,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/RabbitMQ-TTL/">
+    <link itemprop="mainEntityOfPage" href="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="阿杜 Djlnet">
@@ -439,7 +410,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RabbitMQ TTL
+          <h1 class="post-title" itemprop="name headline">RabbitMQ Queue 过期机制测试探索
 
               
             
@@ -465,12 +436,24 @@
                 
               
 
-              <time title="创建时间：2019-06-22 01:45:08 / 修改时间：16:58:41" itemprop="dateCreated datePublished" datetime="2019-06-22T01:45:08+08:00">2019-06-22</time>
+              <time title="创建时间：2019-06-22 01:45:08" itemprop="dateCreated datePublished" datetime="2019-06-22T01:45:08+08:00">2019-06-22</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-23 16:29:30" itemprop="dateModified" datetime="2019-06-23T16:29:30+08:00">2019-06-23</time>
               
             
           </span>
@@ -498,12 +481,12 @@
           
           <span class="post-meta-divider">|</span>
           <span title="post.wordcount">
-             字数统计: 4 字
+             字数统计: 797 字
           </span>
 
           <span class="post-meta-divider">|</span>
           <span title="post.min2read">
-             阅读时间: 1 分钟
+             阅读时间: 3 分钟
           </span>
 
           
@@ -540,9 +523,53 @@
       
 
       
-        <blockquote>
-<p>just test new post</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于RabbitMQ的延时队列 , 官方文档已经给了较为详细的说明文档 , 详情参考链接: <a href="https://www.rabbitmq.com/ttl.html" target="_blank" rel="noopener">https://www.rabbitmq.com/ttl.html</a> , 此文主要记录在某些场景下面的RabbitMQ是否表现与我们预期的结果保持一致…</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><div class="note info">
+            <p>测试环境: RabbitMQ 3.7.15 Erlang 22.0.3 ( centos 7 + docker ) </p>
+          </div>
+
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><blockquote>
+<p>特别说明: 下面的测试采用 c# + .net core 作为client进行 , 首先设置好如下图所示:死信交换机和与其绑定的死信投递的队列</p>
 </blockquote>
+<img src="/2019/06/22/RabbitMQ-TTL/deal-exchange.png" title="死信交换机和与其绑定的死信投递的队列">
+
+<h3 id="问题-关于Queue的x-message-ttl与Message的expiration设置冲突问题思考"><a href="#问题-关于Queue的x-message-ttl与Message的expiration设置冲突问题思考" class="headerlink" title="问题:关于Queue的x-message-ttl与Message的expiration设置冲突问题思考"></a>问题:关于Queue的x-message-ttl与Message的expiration设置冲突问题思考</h3><h4 id="Message本身没有设置过期时间"><a href="#Message本身没有设置过期时间" class="headerlink" title="Message本身没有设置过期时间"></a>Message本身没有设置过期时间</h4><blockquote>
+<p>发布者测试代码如下 , 具体可以参考代码的备注说明</p>
+</blockquote>
+<figure class="highlight csharp"><figcaption><span>RabbitMQ Publisher</span><a href="https://github.com/djl394922860/Resurrection/blob/master/src/rabbitmq/Test_TTL/Program.cs" target="_blank" rel="noopener">Program.cs</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (<span class="keyword">var</span> channel = connection.CreateModel())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 设定一个普通队列,配置参数 x-message-ttl 延迟60s队列 以及 配置死信交换机且该交换机配置了接受过期Msg的队列</span></span><br><span class="line">    channel.QueueDeclare(queue: <span class="string">"test-ttl"</span>,</span><br><span class="line">        durable: <span class="literal">true</span>,</span><br><span class="line">        exclusive: <span class="literal">false</span>,</span><br><span class="line">        autoDelete: <span class="literal">false</span>,</span><br><span class="line">        arguments: <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            &#123;<span class="string">"x-message-ttl"</span>,<span class="number">60000</span> &#125;, <span class="comment">// 注意这里需要是数字格式</span></span><br><span class="line">            &#123; <span class="string">"x-dead-letter-exchange"</span>, <span class="string">"deal-exchange"</span> &#125;, <span class="comment">// 这里需要提前指定过期消息投递的交换机以及交换机绑定的queue ( 如果有需要还需指定 route key )</span></span><br><span class="line">            <span class="comment">//&#123;"x-dead-letter-routing-key","key" &#125;</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 下面发送会使用当前Queue的过期配置</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        channel.BasicPublish(<span class="string">""</span>, <span class="string">"test-ttl"</span>, <span class="literal">null</span>, Encoding.UTF8.GetBytes(<span class="string">$"我是60s过期_<span class="subst">&#123;i&#125;</span>"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>结果如我们所料消息再1分钟之后转移到了死信队列上面 , 默认使用Queue的过期时间</p>
+</blockquote>
+<img src="/2019/06/22/RabbitMQ-TTL/queue-to-deal-exchange.png" title="过期之后投递到了对应的死信队列上去">
+
+<h4 id="Message设置Expiration测试"><a href="#Message设置Expiration测试" class="headerlink" title="Message设置Expiration测试"></a>Message设置Expiration测试</h4><blockquote>
+<p>这里暂时部分修改代码 , 具体参考链接地址查看全部代码</p>
+</blockquote>
+<figure class="highlight csharp"><figcaption><span>RabbitMQ Publisher</span><a href="https://github.com/djl394922860/Resurrection/blob/master/src/rabbitmq/Test_TTL/Program.cs" target="_blank" rel="noopener">Program.cs</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">channel.BasicPublish(<span class="string">""</span>, <span class="string">"test-ttl"</span>, <span class="keyword">new</span> BasicProperties()</span><br><span class="line">&#123;</span><br><span class="line">    Expiration = <span class="string">"30000"</span></span><br><span class="line">&#125;, Encoding.UTF8.GetBytes(<span class="string">$"我是30s过期_<span class="subst">&#123;i&#125;</span>"</span>));</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>结果如上述代码所示 , 在30s( 如果消息本身的过期时间小于Queue的过期时间 , 则使用较小的那个 )之后 , 消息投递到了死信交换机从而最终到了死信队列</p>
+</blockquote>
+<img src="/2019/06/22/RabbitMQ-TTL/1.png" title="30s过期之后投递到了对应的死信队列上去">
+
+<h4 id="Message设置不同的Expiration发布到设置了60s过期得Queue中"><a href="#Message设置不同的Expiration发布到设置了60s过期得Queue中" class="headerlink" title="Message设置不同的Expiration发布到设置了60s过期得Queue中"></a>Message设置不同的Expiration发布到设置了60s过期得Queue中</h4><figure class="highlight csharp"><figcaption><span>RabbitMQ Publisher</span><a href="https://github.com/djl394922860/Resurrection/blob/master/src/rabbitmq/Test_TTL/Program.cs" target="_blank" rel="noopener">Program.cs</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 20s过期</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    channel.BasicPublish(<span class="string">""</span>, <span class="string">"test-ttl"</span>, <span class="keyword">new</span> BasicProperties()</span><br><span class="line">    &#123;</span><br><span class="line">        Expiration = <span class="string">"20000"</span></span><br><span class="line">    &#125;, Encoding.UTF8.GetBytes(<span class="string">$"我是20s过期_<span class="subst">&#123;i&#125;</span>"</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 40s过期</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">40</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    channel.BasicPublish(<span class="string">""</span>, <span class="string">"test-ttl"</span>, <span class="keyword">new</span> BasicProperties()</span><br><span class="line">    &#123;</span><br><span class="line">        Expiration = <span class="string">"40000"</span></span><br><span class="line">    &#125;, Encoding.UTF8.GetBytes(<span class="string">$"我是40s过期_<span class="subst">&#123;i&#125;</span>"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>结果不言而喻 , rabbitMQ 符合预期的 , 先是前面的20条过期 , 然后是后面的40条消息</p>
+</blockquote>
+<img src="/2019/06/22/RabbitMQ-TTL/2.png" title="先是前面的20条过期然后是后面的40条消息投递到了对应的死信队列上去">
+
+<h3 id="问题-Queue没有设置过期时间测试"><a href="#问题-Queue没有设置过期时间测试" class="headerlink" title="问题: Queue没有设置过期时间测试"></a>问题: Queue没有设置过期时间测试</h3><blockquote>
+<p>测试上述相同实验结论如下 , 结果图类似上面 , 所以这里就懒得贴图了哈</p>
+</blockquote>
+<ul>
+<li><p>设置了消息的过期时间则时间一到投递到死信交换机 , 否则消息该咋咋滴</p>
+</li>
+<li><p>如果消息本身过期时间不一致 , 则按照过期时间正常表现 , 参考上述20s和40s消息</p>
+</li>
+</ul>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>此文也是工作中对于某些特殊情况下 , RabbitMQ TTL 的表现行为表示好奇 , 便空闲时候做了一定的测试 , 并记录在案 , 方便自己和其他人查阅 !!</p>
 
       
     </div>
@@ -563,12 +590,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2019/06/22/RabbitMQ-TTL/">RabbitMQ TTL</a></p>
+  <p><span>本文标题:</span><a href="/2019/06/22/RabbitMQ-TTL/">RabbitMQ Queue 过期机制测试探索</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 阿杜 Djlnet 的个人博客">阿杜 Djlnet</a></p>
   <p><span>发布时间:</span>2019年06月22日 - 01:06</p>
-  <p><span>最后更新:</span>2019年06月22日 - 16:06</p>
-  <p><span>原始链接:</span><a href="/2019/06/22/RabbitMQ-TTL/" title="RabbitMQ TTL">http://yoursite.com/2019/06/22/RabbitMQ-TTL/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/06/22/RabbitMQ-TTL/" aria-label="复制成功！"></i></span>
+  <p><span>最后更新:</span>2019年06月23日 - 16:06</p>
+  <p><span>原始链接:</span><a href="/2019/06/22/RabbitMQ-TTL/" title="RabbitMQ Queue 过期机制测试探索">http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://djl394922860.github.io/2019/06/22/RabbitMQ-TTL/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -723,8 +750,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/22/about/" rel="prev" title="about">
-                about <i class="fa fa-chevron-right"></i>
+              <a href="/2019/06/23/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -774,8 +801,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -793,7 +829,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -922,6 +958,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">2.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题-关于Queue的x-message-ttl与Message的expiration设置冲突问题思考"><span class="nav-number">3.1.</span> <span class="nav-text">问题:关于Queue的x-message-ttl与Message的expiration设置冲突问题思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Message本身没有设置过期时间"><span class="nav-number">3.1.1.</span> <span class="nav-text">Message本身没有设置过期时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Message设置Expiration测试"><span class="nav-number">3.1.2.</span> <span class="nav-text">Message设置Expiration测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Message设置不同的Expiration发布到设置了60s过期得Queue中"><span class="nav-number">3.1.3.</span> <span class="nav-text">Message设置不同的Expiration发布到设置了60s过期得Queue中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题-Queue没有设置过期时间测试"><span class="nav-number">3.2.</span> <span class="nav-text">问题: Queue没有设置过期时间测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾声"><span class="nav-number">4.</span> <span class="nav-text">尾声</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -963,7 +1016,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共77字</span>
+  <span class="post-count">博客全站共870字</span>
 </div>
         
 <div class="busuanzi-count">
